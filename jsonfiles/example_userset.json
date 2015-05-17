@@ -1,0 +1,14 @@
+{
+    "class1" : {
+        "dataset_file": {
+            "path": "./toy.txt",
+            "data": [0,3],
+            "labels": [4,5],
+            "split": ","
+        },
+        "method": "neighbors.KNeighborsClassifier",
+        "predict": [7,8,5]
+
+    }
+
+}
