@@ -100,6 +100,7 @@ class ConstructModel:
     def _construct_default_model(self, typetitle):
         """ This comes from 'type'"""
         logging.info("Start to construct deafault model")
+        typetitle = typetitle.lower()
         if typetitle == 'classification':
             from sklearn.ensemble import RandomForestClassifier
             return RandomForestClassifier(n_estimators=100)
