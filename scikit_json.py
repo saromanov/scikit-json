@@ -47,7 +47,7 @@ class ConstructModel:
 
     def _construct_user_dataset(self, userdataset):
         ''' Load data from file '''
-        log.info("Start to construct user dataset")
+        logging.info("Start to construct user dataset")
         if 'path' not in userdataset:
             raise Exception("path param is not found")
         path = userdataset['path']
@@ -99,13 +99,16 @@ class ConstructModel:
 
     def _construct_default_model(self, typetitle):
         """ This comes from 'type'"""
-        log.info("Start to construct deafault model")
+        logging.info("Start to construct deafault model")
         if typetitle == 'classification':
             from sklearn.ensemble import RandomForestClassifier
             return RandomForestClassifier(n_estimators=100)
         if typetitle == 'regression':
             from sklearn.liner_model import LogisticRegression
             return LogisticRegression(penalty='l2')
+        if typetitle == 'clustering':
+            from sklearn.cluster import KMeans
+            return KMeans()
 
     def run(self):
         #Now for case with one model
