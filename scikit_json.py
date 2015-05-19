@@ -134,6 +134,24 @@ class ConstructModel:
         print("Result: ", method.predict(items['predict']))
 
 
+def configure_logging(level):
+    if level == None:
+        return
+    level = level.lower()
+    title = logging.NOTSET
+    if level == 'debug':
+        title = logging.DEBUG
+    if level == 'info':
+        title = logging.INFO
+    if level == 'warning':
+        title = logging.ERROR
+    if level == 'critical':
+        title = logging.CRITICAL
+    if level == 'error':
+        title = logging.ERROR
+
+    logging.basicConfig(level=title)
+
 def main(path):
     sj = Scikitjson()
     if path == None:
@@ -146,6 +164,8 @@ def main(path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--json', help='path to json model')
+    parser.add_argument('--loglevel', help='DEBUG level to show all info messages')
     args = parser.parse_args()
+    configure_logging(args.loglevel)
     main(args.json)
 
