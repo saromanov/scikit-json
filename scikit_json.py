@@ -19,14 +19,18 @@ class Scikitjson:
         self.jsonmodel = self._innerLoad(path)
         self.path = path
 
+    def loadJSONModel(self,model):
+        """ Load model without reading from file"""
+        return json.loads(model)
+
+
     def _innerLoad(self, path):
         if not os.path.exists(path):
             raise Exception("file {0} not found".format(path))
         fs = open(path, 'r')
         raw_data = fs.read()
         fs.close()
-        data = json.loads(raw_data)
-        return data
+        return self.loadJSONModel(raw_data)
 
     def run(self):
         if self.jsonmodel == None:
