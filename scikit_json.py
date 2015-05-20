@@ -14,6 +14,7 @@ import logging
 class Scikitjson:
     def __init__(self):
         self.jsonmodel = None
+        self.path = None
 
     def loadFile(self, path):
         self.jsonmodel = self._innerLoad(path)
@@ -21,7 +22,8 @@ class Scikitjson:
 
     def loadJSONModel(self,model):
         """ Load model without reading from file"""
-        return json.loads(model)
+        self.jsonmodel = json.loads(model)
+        return self.jsonmodel
 
 
     def _innerLoad(self, path):
@@ -36,7 +38,7 @@ class Scikitjson:
         if self.jsonmodel == None:
             raise Exception("Model was not loaded")
         model = ConstructModel(self.jsonmodel, title=self.path)
-        model.run()
+        return model.run()
 
 
 
@@ -111,14 +113,17 @@ class ConstructModel:
             from sklearn.ensemble import RandomForestClassifier
             return RandomForestClassifier(n_estimators=100)
         if typetitle == 'regression':
-            from sklearn.liner_model import LogisticRegression
+            from sklearn.linear_model import LogisticRegression
             return LogisticRegression(penalty='l2')
         if typetitle == 'clustering':
             from sklearn.cluster import KMeans
             return KMeans()
 
     def run(self):
-        #Now for case with one model
+        '''
+           Note: Now for case with one model
+           return predicted value
+        '''
         if self.title != None:
             print("Model from {0}".format(self.title))
         name = list(self.jsonmodel.keys())[0]
@@ -134,12 +139,14 @@ class ConstructModel:
             #Now supported is 'classification' and 'regression'
             thistype = items['type']
             method = self._construct_default_model(thistype)
-        else:
-            raise Exception("Model not found")
+        '''else:
+            raise Exception("Model not found")'''
         method.fit(X,y)
         if 'predict' not in items:
             print("Predict not contains in your model")
-        print("Result: ", method.predict(items['predict']))
+        result = method.predict(items['predict'])
+        print("Result: ", result)
+        return result
 
 
 def configure_logging(level):
