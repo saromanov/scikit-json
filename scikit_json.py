@@ -17,6 +17,7 @@ class Scikitjson:
 
     def loadFile(self, path):
         self.jsonmodel = self._innerLoad(path)
+        self.path = path
 
     def _innerLoad(self, path):
         if not os.path.exists(path):
@@ -30,14 +31,15 @@ class Scikitjson:
     def run(self):
         if self.jsonmodel == None:
             raise Exception("Model was not loaded")
-        model = ConstructModel(self.jsonmodel)
+        model = ConstructModel(self.jsonmodel, title=self.path)
         model.run()
 
 
 
 class ConstructModel:
-    def __init__(self, jsonmodel):
+    def __init__(self, jsonmodel, title=None):
         self.jsonmodel = jsonmodel
+        self.title = title
 
     def _construct_dataset(self, title):
         alldatasets = dir(datasets)
@@ -113,6 +115,8 @@ class ConstructModel:
 
     def run(self):
         #Now for case with one model
+        if self.title != None:
+            print("Model from {0}".format(self.title))
         name = list(self.jsonmodel.keys())[0]
         items = self.jsonmodel[name]
         if 'dataset' in items:
