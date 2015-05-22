@@ -120,13 +120,16 @@ class ConstructModel:
             return KMeans()
 
     def run(self):
-        '''
-           Note: Now for case with one model
-           return predicted value
-        '''
         if self.title != None:
             print("Model from {0}\n".format(self.title))
-        name = list(self.jsonmodel.keys())[0]
+        for key in list(self.jsonmodel.keys()):
+            yield self.run_inner(key)
+
+    def run_inner(self, name):
+        '''
+           return predicted value
+        '''
+        logging.info("Start to prepare model {0}".format(name))
         print("Model name: {0} ".format(name))
         items = self.jsonmodel[name]
         if 'dataset' in items:

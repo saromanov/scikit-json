@@ -78,5 +78,47 @@ class TestSLDatasets(unittest.TestCase):
 
 
 
+class TestSeveralModels(unittest.TestCase):
+    def test_two_models(self):
+        raw_model = '''{
+    "class1" : {
+        "dataset": "load_iris",
+        "method": "neighbors.KNeighborsClassifier",
+        "predict": [5.8,6.7,2.5,1.6]
+
+    },
+
+    "class2": {
+        "dataset": "load_iris",
+        "method": "svm.SVC",
+        "predict": [5.8,6.7,2.5,1.6]
+      }
+        } '''
+        experiment = scikit_json.Scikitjson()
+        experiment.loadJSONModel(raw_model)
+        self.assertIsNotNone(experiment.run())
+
+
+    def test_three_models(self):
+        raw_model = '''{"class1" : {
+        "dataset": "load_iris",
+        "method": "neighbors.KNeighborsClassifier",
+        "predict": [5.8,6.7,2.5,1.6]},
+        "class2": {
+        "dataset": "load_iris",
+        "method": "svm.SVC",
+        "predict": [5.8,6.7,2.5,1.6]
+      },"class3" : {
+          "dataset": "load_iris",
+          "method": "svm.SVC",
+          "predict": [7,4,5,2]
+          }
+        } '''
+        experiment = scikit_json.Scikitjson()
+        experiment.loadJSONModel(raw_model)
+        self.assertIsNotNone(experiment.run())
+
+
+
 
 unittest.main()
