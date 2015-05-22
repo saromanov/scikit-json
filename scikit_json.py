@@ -125,8 +125,9 @@ class ConstructModel:
            return predicted value
         '''
         if self.title != None:
-            print("Model from {0}".format(self.title))
+            print("Model from {0}\n".format(self.title))
         name = list(self.jsonmodel.keys())[0]
+        print("Model name: {0} ".format(name))
         items = self.jsonmodel[name]
         if 'dataset' in items:
             X, y = self._construct_dataset(items['dataset'])
