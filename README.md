@@ -1,6 +1,16 @@
 # scikit-json
 
-Construct models in scikit-learn without programming, only with construction of json files.
+Construct models for scikit-learn without programming, only with json files.
+
+# Install and Usage
+
+``` 
+git clone https://github.com/saromanov/scikit-json
+cd scikit-json
+python scikit_json.py --json jsonfiles/example.json
+```
+
+# Examples
 json file example with datasets from sklearn
 ```
 {
@@ -14,7 +24,7 @@ json file example with datasets from sklearn
 }
 ```
 
-json file example with your dataset
+example of json file with link to your dataset
 ```
 {
     "class1" : {
@@ -33,7 +43,29 @@ json file example with your dataset
 
 ```
 
-#### Description
+example of json file with model parameters
+```
+{
+    "class1" : {
+        "dataset": "load_iris", 
+        "method": {
+            "name": "svm.SVC",
+            "params": {
+                "kernel": "rbf",
+                "gamma" : 0.001,
+                "max_iter": 100
+
+            }
+        },
+        "predict": [5.8,6.7,2.5,1.6]
+
+    }
+
+}
+```
+
+
+# Description of fields
 _class1_ - title of experiment.
 Example: "Experiment1", "experiment2", "foobar", etc
 
@@ -41,7 +73,7 @@ _dataset_ - title of dataset from scikit
 Example: "load_iris", "load_digits", "load_boston"
 
 dataset_file - user dataset object
-* _path_ - path to dataset
+* _path_ - path to your dataset
 * _data_ - [startindex, endindex] - Get 
 * _labels_ - [startindex, endindex] - Get labels
 * _split_ - spliting string symbol
@@ -57,8 +89,25 @@ Example:
 ```
 
 _method_ - Method name from scikit learn
-Example: "svm.SVC", "neighbors.KNeighborsClassifier"
+Example: 
+``` "method": "svm.SVC" ```
+``` "method": "neighbors.KNeighborsClassifier"```
 
-_predict_ - Data to prediction (in list type)
+Or, use extended definition of method
+```
+"method": {
+            "name": "svm.SVC",
+            "params": {
+                "kernel": "rbf",
+                "gamma" : 0.001,
+                "max_iter": 100
+
+            }
+        }
+```
+
+_predict_ - Data for prediction (in list type)
 Example: [1,2,3], [1], [0.8,0.5,0.6,0.7]
 
+# Licence
+MIT
