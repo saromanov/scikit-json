@@ -119,6 +119,26 @@ class TestSeveralModels(unittest.TestCase):
         self.assertIsNotNone(experiment.run())
 
 
+class TestParamsToMethod(unittest.TestCase):
+    def test_svm_params(self):
+        raw_model = '''{"class1" : {
+        "dataset": "load_iris",
+        "method": {
+            "name": "svm.SVC",
+            "params": {
+                "kernel": "rbf",
+                "gamma" : 0.001,
+                "max_iter": 100
+
+            }
+        },
+        "predict": [5.8,6.7,2.5,1.6]}}'''
+        experiment = scikit_json.Scikitjson()
+        experiment.loadJSONModel(raw_model)
+        self.assertIsNotNone(experiment.run())
+
+
+
 
 
 unittest.main()

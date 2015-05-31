@@ -98,12 +98,17 @@ class ConstructModel:
         return self._find_method(title)
 
     def _find_method(self, title):
+        args = {}
+        if isinstance(title, dict):
+            candsplit = title['name'].split('.')
+            args = title['params']
+        else:
+            candsplit = title.split('.')
         allmethods = dir(sklearn)
-        candsplit = title.split('.')
         if len(candsplit) > 1:
             name = candsplit[0]
             #model = sklearn
-            return functools.reduce(lambda x,a: getattr(x,a), candsplit[1:], getattr(sklearn, name))()
+            return functools.reduce(lambda x,a: getattr(x,a), candsplit[1:], getattr(sklearn, name))(**args)
 
     def _construct_default_model(self, typetitle):
         """ This comes from 'type'"""
@@ -177,7 +182,7 @@ def main(path):
         log.error("Path to JSON model not found")
         return
     sj.loadFile(path)
-    sj.run()
+    print(list(sj.run()))
 
 
 if __name__ == '__main__':
