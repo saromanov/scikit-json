@@ -82,6 +82,10 @@ class ConstructModel:
 
         if filetype == 'default':
             return self._parse_dataset_by_default(path)
+        if tiletype == 'csv':
+            return self._parse_as_csv(path)
+        else:
+            raise Exception("This type of dataset format is not supported")
 
     def _parse_dataset_by_default(self, path):
         fs = open(path, 'r')
@@ -95,6 +99,14 @@ class ConstructModel:
             y.extend(res[labelsidx[0]: labelsidx[1]])
         log.info("Finished to construct user dataset")
         return np.array(X), np.array(y)
+
+    def _parse_as_csv(self, path):
+        if not os.path.exists(path):
+            raise Exception("Path for loading dataset is not found")
+        fs = open(path, 'r')
+        data = fs.read()
+        fs.close()
+        return csv.reader(data)
 
 
 
