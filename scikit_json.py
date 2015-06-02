@@ -56,6 +56,7 @@ class ConstructModel:
     def _construct_user_dataset(self, userdataset):
         ''' Load data from file '''
         logging.info("Start to construct user dataset")
+        filetype = 'default'
         if 'path' not in userdataset:
             raise Exception("path param is not found")
         path = userdataset['path']
@@ -76,7 +77,13 @@ class ConstructModel:
             splitter = userdataset['split']
         if not os.path.exists(path):
             raise Exception("Dataset file not found")
+        if 'type' in userdataset:
+            filetype = userdataset['type']
 
+        if filetype == 'default':
+            return self._parse_dataset_by_default(path)
+
+    def _parse_dataset_by_default(self, path):
         fs = open(path, 'r')
         lines = fs.readlines()
         fs.close()
@@ -88,6 +95,7 @@ class ConstructModel:
             y.extend(res[labelsidx[0]: labelsidx[1]])
         log.info("Finished to construct user dataset")
         return np.array(X), np.array(y)
+
 
 
     def _split_dataset(self, X, y):
