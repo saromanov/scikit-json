@@ -137,6 +137,21 @@ class TestParamsToMethod(unittest.TestCase):
         experiment.loadJSONModel(raw_model)
         self.assertIsNotNone(experiment.run())
 
+    def test_svm_without_params(self):
+        raw_model = '''{"class1" : {
+        "dataset": "load_iris",
+        "method": {
+            "name": "svm.SVC",
+            "params": {
+
+            }
+        },
+        "predict": [5.8,6.7,2.5,1.6]}}'''
+        experiment = scikit_json.Scikitjson()
+        experiment.loadJSONModel(raw_model)
+        self.assertIsNotNone(experiment.run())
+
+
 
 
 
