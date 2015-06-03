@@ -19,17 +19,6 @@ raise RuntimeError('Python {version} or later required.')
 ''').strip()
 
 
-def get_version(filename):
-    with open(filename) as f:
-        tree = ast.parse(f.read(), filename)
-    for node in tree.body:
-        if isinstance(node, ast.Assign) and len(node.targets) == 1:
-            target, = node.targets
-            if isinstance(target, ast.Name) and target.id == '__version__':
-                return node.value.s
-    raise ValueError('__version__ not found from {0}'.format(filename))
-
-
 def requirements(filename):
     with open(filename) as f:
         return [x.strip() for x in f.readlines() if x.strip()]
@@ -42,17 +31,16 @@ test.run_tests = run_tests
 
 setup(
     name='scikit-json',
-    version=get_version('__init__.py'),
-    license='BSD',
+    version='0.0.1',
+    license='MIT',
     author='Sergey Romanov',
-    maintainer='Sergey Romanov',
-    maintainer_email='xxsmotur@gmail.com',
+    author_email='xxsmotur@gmail.com',
     platforms='linux',
-    packages=['scikit-json'],
+    packages=['scikit_json'],
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
