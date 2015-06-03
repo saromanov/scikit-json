@@ -4,6 +4,7 @@ import json
 import numpy as np
 
 
+#Test general model
 class TestBasicModels(unittest.TestCase):
     def test_type_clustering(self):
         raw_model = '''{
@@ -56,6 +57,20 @@ class TestBasicModels(unittest.TestCase):
         experiment = scikit_json.Scikitjson()
         experiment.loadJSONModel(raw_model)
         self.assertIsNotNone(experiment.run(), [1])
+
+    def test_params_to_upper_case(self):
+        raw_model = '''{
+               "class1" : {
+                  "Dataset": "load_iris",
+                  "Type": "regression",
+                "PREDICT": [4.9,5.8,2.2,3.1]
+               }
+            }
+             '''
+        experiment = scikit_json.Scikitjson()
+        experiment.loadJSONModel(raw_model)
+        self.assertIsNotNone(experiment.run(), [1])
+
 
 
 
