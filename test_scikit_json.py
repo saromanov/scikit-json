@@ -71,6 +71,16 @@ class TestBasicModels(unittest.TestCase):
         experiment.loadJSONModel(raw_model)
         self.assertIsNotNone(experiment.run(), [1])
 
+    def test_empty_model(self):
+        raw_model = '''{
+            "class1":{}
+        }
+        '''
+        experiment = scikit_json.Scikitjson()
+        experiment.loadJSONModel(raw_model)
+        print(experiment.run())
+        self.assertEqual(list(experiment.run()), [[]])
+
 
 
 

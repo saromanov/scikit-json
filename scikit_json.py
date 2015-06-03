@@ -147,7 +147,10 @@ class ConstructModel:
     def run(self):
         if self.title != None:
             print("Model from {0}\n".format(self.title))
-        for key in list(self.jsonmodel.keys()):
+        modelnames = list(self.jsonmodel.keys())
+        if len(list(modelnames)) == 0:
+            return []
+        for key in list(modelnames):
             yield self.run_inner(key)
 
     def run_inner(self, name):
@@ -156,7 +159,10 @@ class ConstructModel:
         '''
         logging.info("Start to prepare model {0}".format(name))
         print("Model name: {0} ".format(name))
-        items = {key.lower():value for (key, value) in self.jsonmodel[name].items()}
+        typeparams = self.jsonmodel[name]
+        if typeparams == {}:
+            return []
+        items = {key.lower():value for (key, value) in typeparams.items()}
         if 'dataset' in items:
             X, y = self._construct_dataset(items['dataset'])
         elif 'dataset_file' in items:
