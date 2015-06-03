@@ -156,7 +156,7 @@ class ConstructModel:
         '''
         logging.info("Start to prepare model {0}".format(name))
         print("Model name: {0} ".format(name))
-        items = self.jsonmodel[name]
+        items = {key.lower():value for (key, value) in self.jsonmodel[name].items()}
         if 'dataset' in items:
             X, y = self._construct_dataset(items['dataset'])
         elif 'dataset_file' in items:
