@@ -151,6 +151,9 @@ class ConstructModel:
             return
         joblib.dump(model, path, compress=9)
 
+    def try_to_load(self, path):
+        return joblib.load(path)
+
     def run(self):
         if self.title != None:
             print("Model from {0}\n".format(self.title))
@@ -170,6 +173,11 @@ class ConstructModel:
         if typeparams == {}:
             return []
         items = {key.lower():value for (key, value) in typeparams.items()}
+        if 'load' in items:
+            method = self.try_to_load(items['load'])
+            result = method.predict(items['predict'])
+            print("Result: ", result)
+            return result
         if 'dataset' in items:
             X, y = self._construct_dataset(items['dataset'])
         elif 'dataset_file' in items:
