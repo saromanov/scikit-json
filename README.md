@@ -85,6 +85,16 @@ example of json file with saving model
 }
 ```
 
+example of json file with loading model
+```
+{
+    "class1": {
+        "load": "./model1.pkl",
+        "predict": [5.8,6.7,2.5,1.6]
+    }
+}
+```
+
 # Description of fields
 _class1_ - title of experiment.
 Example: "Experiment1", "experiment2", "foobar", etc
