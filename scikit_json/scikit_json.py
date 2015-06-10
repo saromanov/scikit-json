@@ -4,6 +4,7 @@ import os
 import json
 #Dirty, but it needs to load all models
 from sklearn import *
+from sklearn.externals import joblib
 import sklearn
 import argparse
 import functools
@@ -144,6 +145,12 @@ class ConstructModel:
             from sklearn.cluster import KMeans
             return KMeans()
 
+    def try_to_save(self, model, path):
+        ''' In the case if parameter save in on '''
+        if path == None:
+            return
+        joblib.dump(model, path, compress=9)
+
     def run(self):
         if self.title != None:
             print("Model from {0}\n".format(self.title))
@@ -177,6 +184,7 @@ class ConstructModel:
         '''else:
             raise Exception("Model not found")'''
         method.fit(X,y)
+        self.try_to_save(method, items['save'] if 'save' in items else None)
         if 'predict' not in items:
             print("Predict not contains in your model")
         result = method.predict(items['predict'])
