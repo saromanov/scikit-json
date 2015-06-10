@@ -154,6 +154,12 @@ class ConstructModel:
     def try_to_load(self, path):
         return joblib.load(path)
 
+    def _predict_and_show(self, method, data):
+        result = method.predict(data)
+        print("Result: ", result)
+        return result
+
+
     def run(self):
         if self.title != None:
             print("Model from {0}\n".format(self.title))
@@ -175,9 +181,9 @@ class ConstructModel:
         items = {key.lower():value for (key, value) in typeparams.items()}
         if 'load' in items:
             method = self.try_to_load(items['load'])
-            result = method.predict(items['predict'])
-            print("Result: ", result)
-            return result
+            if 'predict' not in items:
+                return
+            return self._predict_and_show(method, items['predict'])
         if 'dataset' in items:
             X, y = self._construct_dataset(items['dataset'])
         elif 'dataset_file' in items:
@@ -195,10 +201,8 @@ class ConstructModel:
         self.try_to_save(method, items['save'] if 'save' in items else None)
         if 'predict' not in items:
             print("Predict not contains in your model")
-        result = method.predict(items['predict'])
-        print("Result: ", result)
-        return result
-
+            return
+        return self._predict_and_show(method, items['predict'])
 
 def configure_logging(level):
     if level == None:
