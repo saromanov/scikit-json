@@ -64,6 +64,26 @@ example of json file with model parameters
 }
 ```
 
+example of json file with saving model
+```
+{
+    "class1" : {
+        "dataset": "load_iris", 
+        "method": "neighbors.KNeighborsClassifier",
+        "predict": [5.8,6.7,2.5,1.6],
+        "save": "./model1.pkl"
+
+    },
+
+    "class2": {
+        "dataset": "load_iris", 
+        "method": "svm.SVC",
+        "predict": [5.8,6.7,2.5,1.6],
+        "save": "./model2.pkl"
+    }
+
+}
+```
 
 # Description of fields
 _class1_ - title of experiment.
