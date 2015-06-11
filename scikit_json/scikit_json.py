@@ -131,13 +131,17 @@ class ConstructModel:
             #model = sklearn
             return functools.reduce(lambda x,a: getattr(x,a), candsplit[1:], getattr(sklearn, name))(**args)
 
+    def _random_forest(self):
+        from sklearn.ensemble import RandomForestClassifier
+        return RandomForestClassifier(n_estimators=100)
+
+
     def _construct_default_model(self, typetitle):
         """ This comes from 'type'"""
         logging.info("Start to construct deafault model")
         typetitle = typetitle.lower()
         if typetitle == 'classification':
-            from sklearn.ensemble import RandomForestClassifier
-            return RandomForestClassifier(n_estimators=100)
+           return self._random_forest()
         if typetitle == 'regression':
             from sklearn.linear_model import LogisticRegression
             return LogisticRegression(penalty='l2')
@@ -189,6 +193,7 @@ class ConstructModel:
         elif 'dataset_file' in items:
             X, y = self._construct_user_dataset(items['dataset_file'])
         #trainX, trainY, testX, testY = self._split_dataset(X,y)
+        method = self._construct_method(items['method']) if 'method' in items else self._random_forest()
         if 'method' in items:
             method = self._construct_method(items['method'])
         elif 'type' in items:
