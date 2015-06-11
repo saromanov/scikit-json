@@ -2,7 +2,7 @@
 #from sklearn.datasets import load_digits
 import os
 import json
-#Dirty, but it needs to load all models
+# Dirty, but it needs to load all models
 from sklearn import *
 from sklearn.externals import joblib
 import sklearn
@@ -13,6 +13,7 @@ import logging
 
 
 class Scikitjson:
+
     def __init__(self):
         self.jsonmodel = None
         self.path = None
@@ -21,11 +22,10 @@ class Scikitjson:
         self.jsonmodel = self._innerLoad(path)
         self.path = path
 
-    def loadJSONModel(self,model):
+    def loadJSONModel(self, model):
         """ Load model without reading from file"""
         self.jsonmodel = json.loads(model)
         return self.jsonmodel
-
 
     def _innerLoad(self, path):
         if not os.path.exists(path):
@@ -42,8 +42,8 @@ class Scikitjson:
         return model.run()
 
 
-
 class ConstructModel:
+
     def __init__(self, jsonmodel, title=None):
         self.jsonmodel = jsonmodel
         self.title = title
@@ -62,12 +62,14 @@ class ConstructModel:
             raise Exception("path param is not found")
         path = userdataset['path']
         if 'data' not in userdataset:
-            raise Exception('data param (start and indexes on training) not found')
+            raise Exception(
+                'data param (start and indexes on training) not found')
         else:
             dataidx = userdataset['data']
 
         if 'labels' not in userdataset:
-            print('Labels param not found. Default label index will be last index on file')
+            print(
+                'Labels param not found. Default label index will be last index on file')
             labelsidx = []
         else:
             labelsidx = userdataset['labels']
@@ -109,8 +111,6 @@ class ConstructModel:
         fs.close()
         return csv.reader(data)
 
-
-
     def _split_dataset(self, X, y):
         ''' Split current dataset on training and testing '''
         pass
@@ -129,19 +129,18 @@ class ConstructModel:
         if len(candsplit) > 1:
             name = candsplit[0]
             #model = sklearn
-            return functools.reduce(lambda x,a: getattr(x,a), candsplit[1:], getattr(sklearn, name))(**args)
+            return functools.reduce(lambda x, a: getattr(x, a), candsplit[1:], getattr(sklearn, name))(**args)
 
     def _random_forest(self):
         from sklearn.ensemble import RandomForestClassifier
         return RandomForestClassifier(n_estimators=100)
-
 
     def _construct_default_model(self, typetitle):
         """ This comes from 'type'"""
         logging.info("Start to construct deafault model")
         typetitle = typetitle.lower()
         if typetitle == 'classification':
-           return self._random_forest()
+            return self._random_forest()
         if typetitle == 'regression':
             from sklearn.linear_model import LogisticRegression
             return LogisticRegression(penalty='l2')
@@ -163,7 +162,6 @@ class ConstructModel:
         print("Result: ", result)
         return result
 
-
     def run(self):
         if self.title != None:
             print("Model from {0}\n".format(self.title))
@@ -182,7 +180,7 @@ class ConstructModel:
         typeparams = self.jsonmodel[name]
         if typeparams == {}:
             return []
-        items = {key.lower():value for (key, value) in typeparams.items()}
+        items = {key.lower(): value for (key, value) in typeparams.items()}
         if 'load' in items:
             method = self.try_to_load(items['load'])
             if 'predict' not in items:
@@ -193,21 +191,23 @@ class ConstructModel:
         elif 'dataset_file' in items:
             X, y = self._construct_user_dataset(items['dataset_file'])
         #trainX, trainY, testX, testY = self._split_dataset(X,y)
-        method = self._construct_method(items['method']) if 'method' in items else self._random_forest()
+        method = self._construct_method(
+            items['method']) if 'method' in items else self._random_forest()
         if 'method' in items:
             method = self._construct_method(items['method'])
         elif 'type' in items:
-            #Now supported is 'classification' and 'regression'
+            # Now supported is 'classification' and 'regression'
             thistype = items['type']
             method = self._construct_default_model(thistype)
         '''else:
             raise Exception("Model not found")'''
-        method.fit(X,y)
+        method.fit(X, y)
         self.try_to_save(method, items['save'] if 'save' in items else None)
         if 'predict' not in items:
             print("Predict not contains in your model")
             return
         return self._predict_and_show(method, items['predict'])
+
 
 def configure_logging(level):
     if level == None:
@@ -227,6 +227,7 @@ def configure_logging(level):
 
     logging.basicConfig(level=title)
 
+
 def main(path):
     sj = Scikitjson()
     if path == None:
@@ -239,8 +240,8 @@ def main(path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--json', help='path to json model')
-    parser.add_argument('--loglevel', help='DEBUG level to show all info messages')
+    parser.add_argument(
+        '--loglevel', help='DEBUG level to show all info messages')
     args = parser.parse_args()
     configure_logging(args.loglevel)
     main(args.json)
-

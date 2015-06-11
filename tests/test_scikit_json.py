@@ -4,8 +4,9 @@ import json
 import numpy as np
 
 
-#Test general model
+# Test general model
 class TestBasicModels(unittest.TestCase):
+
     def test_type_clustering(self):
         raw_model = '''{
                "class1" : {
@@ -82,7 +83,7 @@ class TestBasicModels(unittest.TestCase):
         self.assertEqual(list(experiment.run()), [[]])
 
     def test_without_method(self):
-         raw_model = '''{
+        raw_model = '''{
     "class1" : {
         "dataset": "load_iris",
         "predict": [5.8,6.7,2.5,1.6]
@@ -91,9 +92,8 @@ class TestBasicModels(unittest.TestCase):
     } '''
 
 
-
-
 class TestSLDatasets(unittest.TestCase):
+
     def test_load_boston(self):
         raw_model = '''{
                "class1" : {
@@ -111,8 +111,8 @@ class TestSLDatasets(unittest.TestCase):
         experiment.loadJSONModel(raw_model)
 
 
-
 class TestSeveralModels(unittest.TestCase):
+
     def test_two_models(self):
         raw_model = '''{
     "class1" : {
@@ -131,7 +131,6 @@ class TestSeveralModels(unittest.TestCase):
         experiment = scikit_json.Scikitjson()
         experiment.loadJSONModel(raw_model)
         self.assertIsNotNone(experiment.run())
-
 
     def test_three_models(self):
         raw_model = '''{"class1" : {
@@ -154,6 +153,7 @@ class TestSeveralModels(unittest.TestCase):
 
 
 class TestParamsToMethod(unittest.TestCase):
+
     def test_svm_params(self):
         raw_model = '''{"class1" : {
         "dataset": "load_iris",
@@ -184,10 +184,6 @@ class TestParamsToMethod(unittest.TestCase):
         experiment = scikit_json.Scikitjson()
         experiment.loadJSONModel(raw_model)
         self.assertIsNotNone(experiment.run())
-
-
-
-
 
 
 unittest.main()
