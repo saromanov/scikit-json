@@ -157,9 +157,9 @@ class ConstructModel:
     def try_to_load(self, path):
         return joblib.load(path)
 
-    def _predict_and_show(self, method, data):
+    def _predict_and_show(self, method, methodname, data):
         result = method.predict(data)
-        print("Result: ", result)
+        print("Result: {0} ({1})".format(result, methodname))
         return result
 
     def run(self):
@@ -190,7 +190,7 @@ class ConstructModel:
             X, y = self._construct_dataset(items['dataset'])
         elif 'dataset_file' in items:
             X, y = self._construct_user_dataset(items['dataset_file'])
-        #trainX, trainY, testX, testY = self._split_dataset(X,y)
+        methodname = items['method'] if 'method' in items else 'RandomForest'
         method = self._construct_method(
             items['method']) if 'method' in items else self._random_forest()
         if 'method' in items:
@@ -206,7 +206,7 @@ class ConstructModel:
         if 'predict' not in items:
             print("Predict not contains in your model")
             return
-        return self._predict_and_show(method, items['predict'])
+        return self._predict_and_show(method, methodname, items['predict'])
 
 
 def configure_logging(level):
