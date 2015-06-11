@@ -181,14 +181,28 @@ class ConstructModel:
         if typeparams == {}:
             return []
         items = {key.lower(): value for (key, value) in typeparams.items()}
+
+
+        ''' In the case if exists some model.pkl
+            Example of usage:
+            loading.json
+            {
+                "class1" :{
+                    load:"model.pkl",
+                    predict: [1,2,3]
+                }
+            }
+        '''
         if 'load' in items:
             method = self.try_to_load(items['load'])
             if 'predict' not in items:
                 return
             return self._predict_and_show(method, items['predict'])
+
+        ''' In the case if you want experimenting with datasets in sklearn'''
         if 'dataset' in items:
             X, y = self._construct_dataset(items['dataset'])
-        elif 'dataset_file' in items:
+        if 'dataset_file' in items:
             X, y = self._construct_user_dataset(items['dataset_file'])
         methodname = items['method'] if 'method' in items else 'RandomForest'
         method = self._construct_method(
