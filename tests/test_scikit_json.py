@@ -81,6 +81,15 @@ class TestBasicModels(unittest.TestCase):
         print(experiment.run())
         self.assertEqual(list(experiment.run()), [[]])
 
+    def test_without_method(self):
+         raw_model = '''{
+    "class1" : {
+        "dataset": "load_iris",
+        "predict": [5.8,6.7,2.5,1.6]
+
+        }
+    } '''
+
 
 
 
